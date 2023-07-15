@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import com.umitytsr.dictionaryapp.R
 import com.umitytsr.dictionaryapp.databinding.FragmentDetailerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,7 +34,7 @@ class DetailerFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 with(detailerViewModel){
                     launch {
-                        a(args.word)
+                        insertWord(word)
                     }
                 }
             }

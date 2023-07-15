@@ -13,9 +13,7 @@ import com.umitytsr.dictionaryapp.util.Constants
 class DetailerAdapter(wordMeaning: WordMeaningResponse): RecyclerView.Adapter<DetailerAdapter.WordViewHolder>() {
 
     private val word = wordMeaning.word
-    private val partOfSpeech = wordMeaning.meanings.partOfSpeech
-    private val definition = wordMeaning.meanings.definitions.definition
-
+    private val partOfSpeech = wordMeaning.meanings
 
     inner class WordViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun bind(
@@ -32,6 +30,8 @@ class DetailerAdapter(wordMeaning: WordMeaningResponse): RecyclerView.Adapter<De
                     partOfSpeechText.text = partOfSpeech
                     wordMeaning.text = definition
                 }
+            }else{
+
             }
         }
     }
@@ -53,18 +53,15 @@ class DetailerAdapter(wordMeaning: WordMeaningResponse): RecyclerView.Adapter<De
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         holder.bind(
             word = word[position],
-            partOfSpeech = partOfSpeech[position],
-            definition = definition[position]
+            partOfSpeech = partOfSpeech[position]
         )
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) {
             Constants.ITEM_WORD
-        }else if (position == 1) {
-            Constants.ITEM_MEANING
         }else{
-            Constants.ITEM_SYNONYMS
+            Constants.ITEM_MEANING
         }
     }
 }

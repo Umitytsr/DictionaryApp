@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "dictionary_word")
 data class DictionaryWord(
     @PrimaryKey(autoGenerate = true)
-    val idWord: Int = 1,
+    val idWord: Int = 0,
     val word: String
 )
