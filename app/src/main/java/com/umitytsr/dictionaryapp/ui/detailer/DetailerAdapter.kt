@@ -4,64 +4,100 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.umitytsr.dictionaryapp.R
-import com.umitytsr.dictionaryapp.data.model.remote.meaning.WordMeaningResponse
 import com.umitytsr.dictionaryapp.databinding.ItemRowMeaningBinding
+import com.umitytsr.dictionaryapp.databinding.ItemRowSynonymsBinding
 import com.umitytsr.dictionaryapp.databinding.ItemRowWordBinding
+import com.umitytsr.dictionaryapp.domain.firstCharToUpperCase
+import com.umitytsr.dictionaryapp.domain.model.TypeOfItemWord
 import com.umitytsr.dictionaryapp.util.Constants
 
-class DetailerAdapter(wordMeaning: WordMeaningResponse): RecyclerView.Adapter<DetailerAdapter.WordViewHolder>() {
+class DetailerAdapter(
+    private val wordMeanings: List<TypeOfItemWord>
+) : RecyclerView.Adapter<MyViewHolder>() {
 
-    private val word = wordMeaning.word
-    private val partOfSpeech = wordMeaning.meanings
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            Constants.ITEM_WORD -> {
+                val binding = ItemRowWordBinding.inflate(layoutInflater, parent, false)
+                WordTitleViewHolder(binding)
+            }
 
-    inner class WordViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun bind(
-            word: String,
-            partOfSpeech: String,
-            definition: String
-            ){
-            if (adapterPosition == Constants.ITEM_WORD){
-                val binding = ItemRowWordBinding.bind(itemView)
-                binding.wordText.text = word
-            }else if (adapterPosition == Constants.ITEM_MEANING){
-                val binding = ItemRowMeaningBinding.bind(itemView)
-                with(binding) {
-                    partOfSpeechText.text = partOfSpeech
-                    wordMeaning.text = definition
-                }
-            }else{
+            Constants.ITEM_MEANING -> {
+                val binding = ItemRowMeaningBinding.inflate(layoutInflater, parent, false)
+                MeaningViewHolder(binding)
+            }
 
+            Constants.ITEM_SYNONYMS -> {
+                val binding = ItemRowSynonymsBinding.inflate(layoutInflater, parent, false)
+                SynonymsViewHolder(binding)
+            }
+
+            else -> throw IllegalArgumentException()
+        }
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(wordMeanings[position])
+    }
+
+    override fun getItemCount(): Int {
+        return wordMeanings.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> {
+                Constants.ITEM_WORD
+            }
+            wordMeanings.lastIndex -> {
+                Constants.ITEM_SYNONYMS
+            }
+            else -> {
+                Constants.ITEM_MEANING
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view : View = when(viewType){
-            Constants.ITEM_WORD -> layoutInflater.inflate(R.layout.item_row_word,parent,false)
-            Constants.ITEM_MEANING -> layoutInflater.inflate(R.layout.item_row_meaning,parent,false)
-            else -> throw IllegalArgumentException()
-        }
-        return WordViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        holder.bind(
-            word = word[position],
-            partOfSpeech = partOfSpeech[position]
-        )
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            Constants.ITEM_WORD
-        }else{
-            Constants.ITEM_MEANING
+    inner class WordTitleViewHolder(
+        private val binding: ItemRowWordBinding
+    ) : MyViewHolder(binding.root) {
+        override fun bind(typeOfItemWord: TypeOfItemWord) {
+            val wordTitleUI = (typeOfItemWord as? TypeOfItemWord.WordTitleUI)
+            wordTitleUI?.let {wordTitle ->
+                binding.wordText.text = wordTitle.titleWord.firstCharToUpperCase()
+            }
         }
     }
+
+    inner class MeaningViewHolder(
+        private val binding: ItemRowMeaningBinding
+    ) : MyViewHolder(binding.root) {
+        override fun bind(typeOfItemWord: TypeOfItemWord) {
+            val meaningUI = (typeOfItemWord as? TypeOfItemWord.MeaningUI)
+            meaningUI?.let { meaning ->
+                with(binding) {
+                    wordId.text = meaning.number.toString().plus(" - ")
+                    partOfSpeechText.text = meaning.partOfSpeech.firstCharToUpperCase()
+                    wordMeaning.text = meaning.definition
+                }
+            }
+        }
+
+    }
+
+    inner class SynonymsViewHolder(
+        private val binding: ItemRowSynonymsBinding
+    ) : MyViewHolder(binding.root) {
+        override fun bind(typeOfItemWord: TypeOfItemWord) {
+            val synonymsUI = (typeOfItemWord as? TypeOfItemWord.SynonymsUI)
+            synonymsUI?.let {synonyms ->
+
+            }
+        }
+    }
+}
+
+abstract class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    abstract fun bind(typeOfItemWord: TypeOfItemWord)
 }
