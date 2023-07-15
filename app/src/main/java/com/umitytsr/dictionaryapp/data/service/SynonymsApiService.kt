@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SynonymsApiService {
-    @GET("words?rel_syn={word}")
-    suspend fun getWordSynonyms(@Query("word") word: String): List<WordSynonymsResponse>
+    @GET("words")
+    suspend fun getWordSynonyms(@Query("rel_syn") word: String): List<WordSynonymsResponse>
 }

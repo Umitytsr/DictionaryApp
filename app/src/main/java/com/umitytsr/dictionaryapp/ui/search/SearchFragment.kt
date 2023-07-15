@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umitytsr.dictionaryapp.data.model.local.DictionaryWord
 import com.umitytsr.dictionaryapp.databinding.FragmentSearchBinding
+import com.umitytsr.dictionaryapp.domain.firstCharToUpperCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -42,7 +43,8 @@ class SearchFragment : Fragment(), SearchAdapter.DictionaryItemClickListener {
             override fun afterTextChanged(s: Editable?) {
                 binding.searchButton.setOnClickListener {
                     findNavController().navigate(
-                        SearchFragmentDirections.actionSearchFragmentToDetailerFragment(s.toString())
+                        SearchFragmentDirections
+                            .actionSearchFragmentToDetailerFragment(s.toString().lowercase().firstCharToUpperCase())
                     )
                 }
             }

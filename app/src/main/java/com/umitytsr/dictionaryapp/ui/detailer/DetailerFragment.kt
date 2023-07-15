@@ -10,8 +10,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.umitytsr.dictionaryapp.domain.model.TypeOfItemWord
 import com.umitytsr.dictionaryapp.databinding.FragmentDetailerBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -25,6 +29,7 @@ class DetailerFragment : Fragment() {
     ): View {
         binding = FragmentDetailerBinding.inflate(inflater,container,false)
         val word = args.word
+        detailerViewModel.getWordDetails(word)
         collectDetailerData(word)
         return binding.root
     }
@@ -36,8 +41,23 @@ class DetailerFragment : Fragment() {
                     launch {
                         insertWord(word)
                     }
+
+                    launch {
+                        wordMeaning.collectLatest {
+                            detailrRecyclerView(it)
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    private fun detailrRecyclerView(wordMeanings: List<TypeOfItemWord>) {
+        val _adapter = DetailerAdapter(wordMeanings)
+        val _layout = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        with(binding.detailerRecyclerView) {
+            adapter = _adapter
+            layoutManager = _layout
         }
     }
 }
