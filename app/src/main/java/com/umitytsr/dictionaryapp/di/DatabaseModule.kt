@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideMovieDb(@ApplicationContext context: Context): DictionaryDb{
+    fun provideMovieDb(@ApplicationContext context: Context): DictionaryDb {
         return Room.databaseBuilder(
             context,
             DictionaryDb::class.java,
@@ -26,7 +26,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideMovieDao(dictionaryDb: DictionaryDb): DictionaryDao{
+    fun provideMovieDao(dictionaryDb: DictionaryDb): DictionaryDao {
         return dictionaryDb.directionaryPropertyDao()
     }
 }

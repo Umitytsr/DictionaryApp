@@ -9,24 +9,24 @@ import com.umitytsr.dictionaryapp.databinding.ItemRowHistoryBinding
 class SearchAdapter(
     private val wordHistory: List<DictionaryWord>,
     private val dictionaryItemClickListener: DictionaryItemClickListener
-    )
-    : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>(){
+) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-    inner class SearchViewHolder(private val binding: ItemRowHistoryBinding)
-        : RecyclerView.ViewHolder(binding.root){
-            fun bind(wordHistory: DictionaryWord){
-                with(binding){
-                    historyTextView.text = wordHistory.word
-                    historyCardView.setOnClickListener{
-                        dictionaryItemClickListener.dictionaryItemClicked(wordHistory.word)
-                    }
+    inner class SearchViewHolder(private val binding: ItemRowHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(wordHistory: DictionaryWord) {
+            val word = wordHistory.word.lowercase()
+            with(binding) {
+                historyTextView.text = word
+                historyCardView.setOnClickListener {
+                    dictionaryItemClickListener.dictionaryItemClicked(word)
                 }
             }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemRowHistoryBinding.inflate(layoutInflater,parent,false)
+        val binding = ItemRowHistoryBinding.inflate(layoutInflater, parent, false)
         return SearchViewHolder(binding)
     }
 
