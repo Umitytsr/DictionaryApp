@@ -1,7 +1,6 @@
 package com.umitytsr.dictionaryapp.ui.detailer
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.umitytsr.dictionaryapp.databinding.ItemRowMeaningBinding
@@ -10,6 +9,7 @@ import com.umitytsr.dictionaryapp.databinding.ItemRowWordBinding
 import com.umitytsr.dictionaryapp.domain.firstCharToUpperCase
 import com.umitytsr.dictionaryapp.domain.model.TypeOfItemWord
 import com.umitytsr.dictionaryapp.util.Constants
+import com.umitytsr.dictionaryapp.util.MyViewHolder
 
 class DetailerAdapter(
     private val wordMeanings: List<TypeOfItemWord>
@@ -50,9 +50,11 @@ class DetailerAdapter(
             0 -> {
                 Constants.ITEM_WORD
             }
+
             wordMeanings.lastIndex -> {
                 Constants.ITEM_SYNONYMS
             }
+
             else -> {
                 Constants.ITEM_MEANING
             }
@@ -64,7 +66,7 @@ class DetailerAdapter(
     ) : MyViewHolder(binding.root) {
         override fun bind(typeOfItemWord: TypeOfItemWord) {
             val wordTitleUI = (typeOfItemWord as? TypeOfItemWord.WordTitleUI)
-            wordTitleUI?.let {wordTitle ->
+            wordTitleUI?.let { wordTitle ->
                 binding.wordText.text = wordTitle.titleWord.firstCharToUpperCase()
             }
         }
@@ -91,13 +93,10 @@ class DetailerAdapter(
     ) : MyViewHolder(binding.root) {
         override fun bind(typeOfItemWord: TypeOfItemWord) {
             val synonymsUI = (typeOfItemWord as? TypeOfItemWord.SynonymsUI)
-            synonymsUI?.let {synonyms ->
+            synonymsUI?.let { synonyms ->
 
             }
         }
     }
-}
 
-abstract class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    abstract fun bind(typeOfItemWord: TypeOfItemWord)
 }

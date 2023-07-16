@@ -22,5 +22,8 @@
         <argument
             android:name="word"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailerFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 </navigation>

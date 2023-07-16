@@ -2,6 +2,7 @@ package com.umitytsr.dictionaryapp.ui.detailer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.umitytsr.dictionaryapp.data.model.remote.synonyms.WordSynonymsResponse
 import com.umitytsr.dictionaryapp.domain.model.TypeOfItemWord
 import com.umitytsr.dictionaryapp.data.repo.DictionaryAppRepository
 import com.umitytsr.dictionaryapp.domain.getTypeOfItemWord
@@ -22,6 +23,9 @@ class DetailerViewModel @Inject constructor(
     private val _wordMeaning = MutableStateFlow<List<TypeOfItemWord>>(emptyList())
     val wordMeaning: StateFlow<List<TypeOfItemWord>> = _wordMeaning.asStateFlow()
 
+    private val _wordSynonyms = MutableStateFlow<List<WordSynonymsResponse>>(emptyList())
+    val wordSynonyms: StateFlow<List<WordSynonymsResponse>> = _wordSynonyms.asStateFlow()
+
     fun getWordDetails(word: String) {
         viewModelScope.launch {
             val meaningDeferred = async { dictionaryAppRepository.getWordMeaning(word).first() }
@@ -35,12 +39,11 @@ class DetailerViewModel @Inject constructor(
                 synonymsResponse
             )
             _wordMeaning.emit(typeOfItemWord)
+            _wordSynonyms.emit(synonymsResponse)
         }
     }
-
 
     suspend fun insertWord(word: String) {
         dictionaryAppRepository.insertWordSearch(word)
     }
-
 }

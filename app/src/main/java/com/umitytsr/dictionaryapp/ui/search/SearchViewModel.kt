@@ -20,13 +20,14 @@ class SearchViewModel @Inject constructor(
     val searchHistory: StateFlow<List<DictionaryWord>> = _searchHistory.asStateFlow()
 
     fun loadSearchHistory() {
-       viewModelScope.launch {
-           dictionaryRepository.getRecentSearch().collect{
-               _searchHistory.emit(it)
-           }
-       }
+        viewModelScope.launch {
+            dictionaryRepository.getRecentSearch().collect {
+                _searchHistory.emit(it)
+            }
+        }
     }
-    fun deleteOldSearch(){
+
+    fun deleteOldSearch() {
         viewModelScope.launch {
             dictionaryRepository.deleteOldSearch()
         }

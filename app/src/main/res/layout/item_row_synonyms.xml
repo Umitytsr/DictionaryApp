@@ -8,14 +8,13 @@
         android:id="@+id/titleSynonyms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Synonym"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="14dp"
-        android:layout_marginStart="4dp"
-        android:textSize="18sp"
+        android:text="Synonym"
         android:textColor="#3F5CFF"
+        android:textSize="18sp"
         android:textStyle="bold"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
